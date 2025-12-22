@@ -14,50 +14,82 @@ import { InrPipe } from '../../pipes/inr.pipe';
     standalone: true,
     imports: [CommonModule, FormsModule, LucideAngularModule, DealCardComponent, InrPipe],
     template: `
-    <div class="h-full flex flex-col animate-in slide-in-from-right duration-500">
-      <div class="bg-white border-b border-slate-200 px-6 py-3 flex flex-col lg:flex-row gap-3 items-start lg:items-center">
-          <div class="relative flex-1 w-full lg:w-auto">
-            <lucide-icon name="search" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" [size]="16"></lucide-icon>
-            <input type="text" placeholder="Filter pipeline deals..." [(ngModel)]="searchTerm" 
-               class="pl-9 pr-4 py-2 text-sm border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none w-full bg-slate-50" />
+    <div class="h-full flex flex-col animate-in slide-in-from-right duration-700 relative">
+      <!-- Top Intelligence Bar -->
+      <div class="bg-white/80 backdrop-blur-md border-b border-slate-100 px-8 py-4 flex flex-col lg:flex-row gap-6 items-start lg:items-center relative z-20 shadow-sm">
+          <div class="relative flex-1 w-full lg:w-96 group">
+            <lucide-icon name="search" class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500 transition-colors" [size]="16"></lucide-icon>
+            <input type="text" placeholder="Search operational deals..." [(ngModel)]="searchTerm" 
+               class="pl-12 pr-4 py-3 text-xs border border-slate-100 rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500/50 outline-none w-full bg-slate-50 transition-all font-bold placeholder:font-medium placeholder:text-slate-400" />
           </div>
-          <div class="flex flex-wrap gap-2 w-full lg:w-auto">
-              <select [(ngModel)]="categoryFilter" class="px-3 py-2 text-sm border border-slate-200 rounded-lg outline-none bg-white focus:ring-2 focus:ring-blue-500 transition-all font-medium text-slate-600">
-                <option value="all">All Sectors</option>
-                <option *ngFor="let c of categories" [value]="c">{{ c }}</option>
-              </select>
-              <select [(ngModel)]="repFilter" class="px-3 py-2 text-sm border border-slate-200 rounded-lg outline-none bg-white focus:ring-2 focus:ring-blue-500 transition-all font-medium text-slate-600">
-                <option value="all">All Owners</option>
-                <option *ngFor="let r of salesService.reps()" [value]="r.id">{{ r.name }}</option>
-              </select>
+          
+          <div class="flex flex-wrap gap-3 w-full lg:w-auto">
+              <div class="flex items-center gap-2 px-3 py-1 bg-slate-50 rounded-2xl border border-slate-100">
+                <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest pl-2">Sector</span>
+                <select [(ngModel)]="categoryFilter" class="px-3 py-2 text-xs border-none rounded-xl outline-none bg-transparent focus:ring-0 transition-all font-black text-slate-900 cursor-pointer">
+                  <option value="all">Global Mix</option>
+                  <option *ngFor="let c of categories" [value]="c">{{ c }}</option>
+                </select>
+              </div>
+
+              <div class="flex items-center gap-2 px-3 py-1 bg-slate-50 rounded-2xl border border-slate-100">
+                <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest pl-2">Owner</span>
+                <select [(ngModel)]="repFilter" class="px-3 py-2 text-xs border-none rounded-xl outline-none bg-transparent focus:ring-0 transition-all font-black text-slate-900 cursor-pointer">
+                  <option value="all">Full Corps</option>
+                  <option *ngFor="let r of salesService.reps()" [value]="r.id">{{ r.name }}</option>
+                </select>
+              </div>
+          </div>
+
+          <div class="ml-auto hidden xl:flex items-center gap-4 border-l border-slate-100 pl-6">
+             <div class="flex flex-col items-end">
+                <span class="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em]">Active Capital</span>
+                <span class="text-sm font-black text-slate-900">{{ getTotalPipeline() | inr }}</span>
+             </div>
+             <div class="p-2 bg-blue-50 text-blue-600 rounded-xl">
+                <lucide-icon name="activity" [size]="18"></lucide-icon>
+             </div>
           </div>
       </div>
 
-      <div class="flex-1 overflow-x-auto p-4">
-        <div class="flex gap-4 min-w-max h-full">
-          <div *ngFor="let stage of stageConfig" class="w-80 flex flex-col bg-slate-100 rounded-xl max-h-full border border-slate-200">
-            <div class="p-4 border-b border-slate-200 rounded-t-xl sticky top-0 bg-slate-100/90 backdrop-blur-sm z-10 flex justify-between items-center">
-              <div class="flex items-center gap-2">
-                <div class="w-2.5 h-2.5 rounded-full" [ngClass]="stage.color"></div>
-                <h3 class="font-bold text-xs uppercase tracking-widest text-slate-600">{{ stage.label }}</h3>
+      <!-- KANBAN CORE -->
+      <div class="flex-1 overflow-x-auto p-8 relative z-10 bg-slate-50/30">
+        <div class="flex gap-8 min-w-max h-full">
+          <div *ngFor="let stage of stageConfig" 
+               class="w-[22rem] flex flex-col bg-white/40 rounded-[2.5rem] max-h-full border border-white p-3 group/stage hover:bg-white/60 transition-colors">
+            
+            <div class="p-5 flex justify-between items-center mb-2">
+              <div class="flex items-center gap-3">
+                <div class="w-2.5 h-2.5 rounded-full ring-4 ring-white shadow-sm" [ngClass]="stage.color"></div>
+                <h3 class="font-black text-[11px] uppercase tracking-[0.2em] text-slate-500 group-hover/stage:text-slate-900 transition-colors">{{ stage.label }}</h3>
               </div>
-              <span class="text-[10px] font-bold text-slate-500 bg-white border border-slate-200 px-2 py-0.5 rounded-full shadow-sm">
-                {{ getDealsInStage(stage.id).length }}
-              </span>
+              <div class="flex items-center gap-2">
+                 <span class="text-[10px] font-black text-slate-500 bg-white border border-slate-100 px-3 py-1 rounded-full shadow-sm">
+                   {{ getDealsInStage(stage.id).length }}
+                 </span>
+              </div>
             </div>
             
-            <div class="p-3 space-y-3 overflow-y-auto scrollbar-hide flex-1">
+            <div class="px-2 pb-4 space-y-4 overflow-y-auto scrollbar-hide flex-1">
               <app-deal-card *ngFor="let deal of getDealsInStage(stage.id)" 
                   [deal]="deal" 
                   (onMoveStage)="handleMoveStage($event)" 
-                  (onEdit)="handleEditDeal($event)">
+                  (onEdit)="handleEditDeal($event)"
+                  class="animate-in fade-in slide-in-from-bottom-2 duration-300">
               </app-deal-card>
+
+              <!-- Empty State in Stage -->
+              <div *ngIf="getDealsInStage(stage.id).length === 0" class="flex flex-col items-center justify-center py-20 opacity-20 group-hover/stage:opacity-40 transition-opacity pointer-events-none">
+                 <lucide-icon [name]="'sparkles'" [size]="32" class="mb-2 text-slate-400"></lucide-icon>
+                 <span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Zero Load</span>
+              </div>
             </div>
             
-            <div class="p-3 bg-white/50 border-t border-slate-200 rounded-b-xl">
-               <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider text-center">
-                 Total {{ getTotalValue(stage.id) | inr }}
-               </p>
+            <div class="p-5 mt-auto bg-white/80 rounded-[2rem] border border-slate-50 shadow-sm mx-1 mb-1">
+               <div class="flex justify-between items-center">
+                  <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Stage Value</span>
+                  <span class="text-xs font-black text-slate-800">{{ getTotalValue(stage.id) | inr }}</span>
+               </div>
             </div>
           </div>
         </div>
@@ -94,6 +126,10 @@ export class PipelineComponent {
         });
     });
 
+    getTotalPipeline() {
+        return this.filteredDeals().reduce((acc, d) => acc + d.value, 0);
+    }
+
     getDealsInStage(stageId: string) {
         return this.filteredDeals().filter(d => d.stage === stageId);
     }
@@ -103,7 +139,7 @@ export class PipelineComponent {
     }
 
     handleMoveStage(event: { dealId: string, direction: 'next' | 'prev' }) {
-        if (!this.authService.isAdmin()) return;
+        if (!this.authService.isAuthenticated) return;
         const deal = this.salesService.deals().find(d => d.id === event.dealId);
         if (!deal) return;
 
@@ -121,7 +157,7 @@ export class PipelineComponent {
     }
 
     handleEditDeal(deal: Deal) {
-        if (!this.authService.isAdmin()) return;
+        if (!this.authService.isAuthenticated) return;
         this.salesService.openDealModal(deal);
     }
 }

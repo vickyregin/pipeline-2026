@@ -1,61 +1,103 @@
 <!-- Loader while checking auth -->
-<div *ngIf="authService.loading()" class="min-h-screen flex items-center justify-center bg-slate-900">
-  <lucide-icon name="refresh-ccw" class="animate-spin text-blue-500" [size]="48"></lucide-icon>
+<div *ngIf="authService.loading()" class="min-h-screen flex items-center justify-center bg-slate-950 overflow-hidden">
+  <div class="relative">
+    <div class="absolute inset-0 bg-blue-600 rounded-full blur-[100px] opacity-20 animate-pulse"></div>
+    <lucide-icon name="refresh-ccw" class="animate-spin text-blue-500 relative z-10" [size]="48"></lucide-icon>
+  </div>
 </div>
 
-<!-- Main App Layout (Visible to everyone) -->
-<div *ngIf="!authService.loading()" class="font-sans text-slate-900">
+<!-- Main App Layout -->
+<div *ngIf="!authService.loading()" class="font-sans text-slate-900 selection:bg-blue-100 selection:text-blue-900">
 
-  <!-- Content gated by whether we are on the login page or not -->
   <ng-container *ngIf="router.url !== '/login'; else loginLayout">
-    <div class="flex h-screen bg-slate-50 overflow-hidden font-sans text-slate-900">
+    <div class="flex h-screen bg-slate-100/50 overflow-hidden font-sans text-slate-900 relative">
 
+      <!-- Premium Sidebar -->
       <app-sidebar (openSchema)="isSchemaModalOpen.set(true)"></app-sidebar>
 
-      <!-- Main Content -->
-      <main class="flex-1 flex flex-col h-full overflow-hidden">
-        <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8 flex-shrink-0">
-          <div class="flex items-center gap-4">
-            <h2 class="text-xl font-bold text-slate-800 capitalize">{{ activeTab() }}</h2>
+      <!-- Main Visual Wrapper -->
+      <main class="flex-1 flex flex-col h-full overflow-hidden relative">
+
+        <!-- Premium Glass Header -->
+        <header
+          class="h-20 bg-white/70 backdrop-blur-xl border-b border-white/40 flex items-center justify-between px-8 z-30 flex-shrink-0 shadow-sm shadow-black/5">
+          <div class="flex items-center gap-6">
+            <div class="flex flex-col">
+              <span
+                class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] leading-none mb-1">Navigation /
+                Context</span>
+              <h2 class="text-2xl font-black text-slate-900 tracking-tight flex items-center gap-3">
+                {{ activeTab() }}
+                <div class="w-1 h-1 bg-slate-200 rounded-full"></div>
+              </h2>
+            </div>
+
             <div *ngIf="activeTab() === 'Pipeline'"
-              class="flex items-center gap-2 text-xs font-semibold px-2 py-1 bg-blue-50 text-blue-600 rounded-md border border-blue-100">
-              <lucide-icon name="target" [size]="14"></lucide-icon> {{ openDealsCount() }} Open Deals
+              class="hidden md:flex items-center gap-3 px-4 py-2 bg-white rounded-2xl border border-slate-100 shadow-sm animate-in fade-in slide-in-from-left-4 duration-500">
+              <div class="flex h-6 w-6 items-center justify-center bg-blue-50 text-blue-600 rounded-lg">
+                <lucide-icon name="target" [size]="14"></lucide-icon>
+              </div>
+              <span class="text-xs font-bold text-slate-600">{{ openDealsCount() }} Working Opportunities</span>
             </div>
           </div>
-          <div class="flex items-center gap-4">
-            <!-- New Deal Button (Only for Authenticated Users) -->
-            <button *ngIf="authService.isAuthenticated" (click)="salesService.openDealModal()"
-              class="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-all shadow-md shadow-blue-500/20 active:scale-95 cursor-pointer">
-              <lucide-icon name="plus" [size]="16"></lucide-icon> New Deal
-            </button>
 
-            <!-- Login Button (Only for Guest Users) -->
-            <button *ngIf="!authService.isAuthenticated" routerLink="/login"
-              class="flex items-center gap-2 bg-slate-800 hover:bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-all shadow-md active:scale-95 cursor-pointer">
-              <lucide-icon name="lock" [size]="16"></lucide-icon> Log In
-            </button>
+          <div class="flex items-center gap-5">
+            <!-- Action Center -->
+            <div class="flex items-center gap-2 p-1.5 bg-slate-100/50 rounded-2xl border border-slate-200">
+              <button *ngIf="authService.isAuthenticated" (click)="salesService.openDealModal()"
+                class="group flex items-center gap-2 bg-slate-900 hover:bg-blue-600 text-white px-5 py-2.5 rounded-xl text-xs font-bold transition-all shadow-xl shadow-black/10 active:scale-95 cursor-pointer">
+                <lucide-icon name="plus" [size]="16"
+                  class="group-hover:rotate-90 transition-transform duration-300"></lucide-icon>
+                Initiate New Deal
+              </button>
 
-            <div *ngIf="authService.isAuthenticated" class="flex items-center gap-3 pl-4 border-l border-slate-100">
-              <div class="flex flex-col items-end">
-                <span class="text-xs font-bold text-slate-700">{{ authService.user()?.username }}</span>
+              <button *ngIf="!authService.isAuthenticated" routerLink="/login"
+                class="flex items-center gap-2 bg-white hover:bg-slate-50 text-slate-900 px-5 py-2.5 rounded-xl text-xs font-bold transition-all border border-slate-200 shadow-sm active:scale-95 cursor-pointer">
+                <lucide-icon name="lock" [size]="16"></lucide-icon> Restricted Access
+              </button>
+            </div>
+
+            <!-- User Profile Section -->
+            <div class="flex items-center gap-3 pl-5 border-l border-slate-200">
+              <div *ngIf="authService.isAuthenticated" class="flex flex-col items-end">
+                <span class="text-xs font-black text-slate-800 tracking-tight">{{ authService.user()?.username }}</span>
                 <button (click)="authService.signOut()"
-                  class="text-[10px] font-bold text-slate-400 hover:text-red-500 transition-colors uppercase tracking-wider">Sign
-                  Out</button>
+                  class="text-[9px] font-black text-slate-400 hover:text-red-500 transition-colors uppercase tracking-widest bg-slate-50 px-2 py-0.5 rounded border border-slate-100 mt-1">
+                  Terminate Session
+                </button>
               </div>
-              <div
-                class="h-9 w-9 bg-gradient-to-tr from-blue-600 to-indigo-600 rounded-full flex items-center justify-center text-white font-bold border-2 border-white shadow-sm ring-1 ring-slate-200 cursor-pointer hover:ring-blue-300 transition-all uppercase">
-                {{ authService.user()?.username?.[0] }}
+
+              <div class="relative">
+                <div
+                  class="h-11 w-11 bg-gradient-to-tr from-slate-200 to-slate-300 rounded-2xl flex items-center justify-center border-2 border-white shadow-lg overflow-hidden transition-transform hover:scale-105">
+                  <span *ngIf="!authService.isAuthenticated" class="text-slate-500 font-bold text-lg italic">?</span>
+                  <div *ngIf="authService.isAuthenticated"
+                    class="w-full h-full bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white font-black text-lg">
+                    {{ authService.user()?.username?.[0] }}
+                  </div>
+                </div>
+                <div *ngIf="authService.isAuthenticated"
+                  class="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-emerald-500 border-2 border-white rounded-full">
+                </div>
               </div>
             </div>
           </div>
         </header>
 
-        <div class="flex-1 overflow-auto bg-slate-50">
-          <router-outlet></router-outlet>
+        <!-- Main Content Viewport -->
+        <div class="flex-1 overflow-auto bg-slate-50/50 p-0 relative">
+          <!-- Background Aesthetic Blobs for Content -->
+          <div
+            class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-500/5 rounded-full blur-[140px] pointer-events-none z-0">
+          </div>
+
+          <div class="relative z-10 h-full page-enter">
+            <router-outlet></router-outlet>
+          </div>
         </div>
       </main>
 
-      <!-- Modals (Only logic handles visibility/write protection) -->
+      <!-- Modals -->
       <app-add-deal-modal *ngIf="salesService.isAddDealModalOpen()" [deal]="salesService.editingDeal()"
         (close)="salesService.closeDealModal()" (save)="handleSaveDeal($event)" (delete)="handleDeleteDeal($event)">
       </app-add-deal-modal>
@@ -66,6 +108,8 @@
   </ng-container>
 
   <ng-template #loginLayout>
-    <router-outlet></router-outlet>
+    <div class="page-enter">
+      <router-outlet></router-outlet>
+    </div>
   </ng-template>
 </div>

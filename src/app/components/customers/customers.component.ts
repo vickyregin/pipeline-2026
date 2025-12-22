@@ -14,101 +14,118 @@ const ITEMS_PER_PAGE = 8;
     standalone: true,
     imports: [CommonModule, FormsModule, LucideAngularModule, InrPipe],
     template: `
-    <div class="flex flex-col h-full animate-in zoom-in-95 duration-500 p-8">
-      <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden flex flex-col h-full">
-        <div class="p-6 border-b border-slate-200 flex flex-col gap-4">
-          <div class="flex justify-between items-center">
-             <h3 class="text-sm font-bold text-slate-700 uppercase tracking-wider">Customer Registry & Projected Yields</h3>
-             <span class="text-[10px] font-bold text-slate-400 uppercase bg-slate-50 px-2 py-1 rounded border border-slate-100">
-               Showing {{ paginatedDeals().length }} of {{ filteredDeals().length }} Customers
-             </span>
-          </div>
-          <div class="flex flex-col lg:flex-row gap-3 items-start lg:items-center bg-slate-50 p-2 rounded-lg border border-slate-100">
-            <div class="relative flex-1 w-full lg:w-auto">
-              <lucide-icon name="search" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" [size]="14"></lucide-icon>
-              <input type="text" placeholder="Search accounts..." [(ngModel)]="searchTerm" 
-                 class="pl-9 pr-4 py-1.5 text-xs border border-slate-200 rounded-md focus:ring-1 focus:ring-blue-500 outline-none w-full bg-white shadow-sm" />
-            </div>
-            <div class="flex gap-2">
-               <select [(ngModel)]="stageFilter" class="px-2 py-1.5 text-xs border border-slate-200 rounded-md outline-none bg-white font-medium text-slate-500">
-                  <option value="all">Any Stage</option>
-                  <option *ngFor="let s of stages" [value]="s">{{ s }}</option>
-                </select>
-                <select [(ngModel)]="categoryFilter" class="px-2 py-1.5 text-xs border border-slate-200 rounded-md outline-none bg-white font-medium text-slate-500">
-                  <option value="all">Any Sector</option>
-                  <option *ngFor="let c of categories" [value]="c">{{ c }}</option>
-                </select>
-                <select [(ngModel)]="repFilter" class="px-2 py-1.5 text-xs border border-slate-200 rounded-md outline-none bg-white font-medium text-slate-500">
-                  <option value="all">Any Owner</option>
-                  <option *ngFor="let r of salesService.reps()" [value]="r.id">{{ r.name }}</option>
-                </select>
-            </div>
-          </div>
+    <div class="flex flex-col h-full animate-in zoom-in-95 duration-700 p-8 space-y-6">
+      
+      <!-- Explorer Header -->
+      <div class="bg-white rounded-[2.5rem] shadow-sm border border-slate-100 p-8">
+        <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
+           <div class="flex flex-col">
+              <span class="text-[9px] font-black text-slate-400 uppercase tracking-[0.3em] mb-1">Entity Intelligence</span>
+              <h1 class="text-2xl font-black text-slate-900 tracking-tight">Account Registry & Yields</h1>
+           </div>
+           
+           <div class="bg-slate-50 p-2 rounded-2xl border border-slate-100 flex flex-col md:flex-row items-center gap-2 w-full lg:w-auto">
+             <div class="relative w-full md:w-64">
+               <lucide-icon name="search" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" [size]="14"></lucide-icon>
+               <input type="text" placeholder="Filter entities..." [(ngModel)]="searchTerm" 
+                  class="pl-9 pr-4 py-2 text-xs border-none rounded-xl outline-none w-full bg-white shadow-sm font-bold placeholder:font-medium placeholder:text-slate-400" />
+             </div>
+             
+             <div class="flex gap-2 w-full md:w-auto">
+                <select [(ngModel)]="stageFilter" class="px-4 py-2 text-xs border border-slate-100 rounded-xl outline-none bg-white font-black text-slate-800 cursor-pointer shadow-sm">
+                   <option value="all">Global Stages</option>
+                   <option *ngFor="let s of stages" [value]="s">{{ s }}</option>
+                 </select>
+                 <select [(ngModel)]="categoryFilter" class="px-4 py-2 text-xs border border-slate-100 rounded-xl outline-none bg-white font-black text-slate-800 cursor-pointer shadow-sm">
+                   <option value="all">Direct Sectors</option>
+                   <option *ngFor="let c of categories" [value]="c">{{ c }}</option>
+                 </select>
+             </div>
+           </div>
         </div>
+      </div>
 
+      <!-- Main Data Table -->
+      <div class="bg-white rounded-[2.5rem] shadow-sm border border-slate-100 overflow-hidden flex flex-col flex-1">
         <div class="flex-1 overflow-auto">
-          <table class="w-full text-left border-collapse">
-            <thead class="bg-slate-50 border-b border-slate-200 sticky top-0 z-10 shadow-sm">
-              <tr>
-                <th class="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Customer</th>
-                <th class="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Type</th>
-                <th class="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Sector</th>
-                <th class="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-right">Value</th>
-                <th class="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-right">Prob.</th>
-                <th class="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-right">Proj. Vol</th>
-                <th class="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-center">Action</th>
+          <table class="w-full text-left border-separate border-spacing-0">
+            <thead class="sticky top-0 z-10">
+              <tr class="bg-slate-50/80 backdrop-blur-md">
+                <th class="px-8 py-5 text-[9px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-100">Customer Entity</th>
+                <th class="px-8 py-5 text-[9px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-100">DNA</th>
+                <th class="px-8 py-5 text-[9px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-100">Classification</th>
+                <th class="px-8 py-5 text-[9px] font-black text-slate-400 uppercase tracking-widest text-right border-b border-slate-100">Market Value</th>
+                <th class="px-8 py-5 text-[9px] font-black text-slate-400 uppercase tracking-widest text-right border-b border-slate-100">Probability</th>
+                <th class="px-8 py-5 text-[9px] font-black text-slate-400 uppercase tracking-widest text-right border-b border-slate-100">Projected Yield</th>
+                <th class="px-8 py-5 text-[9px] font-black text-slate-400 uppercase tracking-widest text-center border-b border-slate-100">Ops</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-slate-100">
-              <tr *ngFor="let deal of paginatedDeals()" class="hover:bg-slate-50 transition-colors group">
-                <td class="px-6 py-4">
-                  <div class="font-bold text-slate-800 text-sm group-hover:text-blue-600 transition-colors">{{ deal.customerName }}</div>
-                  <div class="text-[10px] text-slate-400 font-semibold uppercase">{{ deal.title }}</div>
+            <tbody class="divide-y divide-slate-50">
+              <tr *ngFor="let deal of paginatedDeals()" class="hover:bg-blue-50/20 transition-all group">
+                <td class="px-8 py-5">
+                  <div class="font-black text-slate-900 text-sm group-hover:text-blue-600 transition-colors">{{ deal.customerName }}</div>
+                  <div class="text-[10px] text-slate-400 font-bold uppercase tracking-tight">{{ deal.title }}</div>
                 </td>
-                <td class="px-6 py-4">
-                  <span class="text-[10px] font-bold uppercase tracking-tight px-1.5 py-0.5 rounded"
-                        [ngClass]="deal.businessType === businessType.NEW ? 'bg-orange-50 text-orange-600 border border-orange-100' : 'bg-slate-100 text-slate-500 border border-slate-200'">
-                    {{ deal.businessType === businessType.NEW ? 'New' : 'Existing' }}
+                <td class="px-8 py-5">
+                  <span class="text-[9px] font-black uppercase tracking-widest px-2 py-1 rounded-lg border shadow-sm inline-block"
+                        [ngClass]="deal.businessType === businessType.NEW ? 'bg-orange-50 text-orange-600 border-orange-100' : 'bg-slate-100 text-slate-400 border-slate-200'">
+                    {{ deal.businessType === businessType.NEW ? 'New Ops' : 'Existing' }}
                   </span>
                 </td>
-                <td class="px-6 py-4">
-                  <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-indigo-50 text-indigo-700 uppercase tracking-tighter">
+                <td class="px-8 py-5">
+                  <span class="inline-flex items-center px-3 py-1 rounded-xl text-[9px] font-black bg-indigo-50 text-indigo-700 border border-indigo-100 uppercase tracking-widest shadow-sm">
                      {{ deal.category }}
                   </span>
                 </td>
-                <td class="px-6 py-4 text-right font-medium text-slate-700 text-sm">{{ deal.value | inr }}</td>
-                <td class="px-6 py-4 text-right text-slate-600 text-sm">{{ deal.probability }}%</td>
-                <td class="px-6 py-4 text-right font-bold text-slate-900 text-sm">{{ (deal.value * (deal.probability / 100)) | inr }}</td>
-                <td class="px-6 py-4 text-center">
-                   <button *ngIf="authService.isAdmin()" (click)="handleEditDeal(deal)" class="text-blue-600 hover:text-blue-800 text-[11px] font-bold uppercase tracking-wider px-2 py-1 bg-blue-50 hover:bg-blue-100 rounded transition-colors">Review</button>
-                   <span *ngIf="!authService.isAdmin()" class="text-slate-400 text-[11px] font-bold uppercase tracking-wider">Locked</span>
+                <td class="px-8 py-5 text-right font-black text-slate-700 text-sm tabular-nums">{{ deal.value | inr }}</td>
+                <td class="px-8 py-5 text-right">
+                   <div class="flex items-center justify-end gap-2">
+                      <div class="w-1.5 h-1.5 rounded-full" [ngClass]="deal.probability > 70 ? 'bg-emerald-500' : deal.probability > 40 ? 'bg-blue-500' : 'bg-amber-500'"></div>
+                      <span class="text-xs font-black text-slate-600">{{ deal.probability }}%</span>
+                   </div>
+                </td>
+                <td class="px-8 py-5 text-right font-black text-slate-900 text-sm tabular-nums">{{ (deal.value * (deal.probability / 100)) | inr }}</td>
+                <td class="px-8 py-5 text-center">
+                   <button *ngIf="authService.isAuthenticated" (click)="handleEditDeal(deal)" 
+                      class="text-blue-600 hover:text-white text-[9px] font-black uppercase tracking-widest px-4 py-2 bg-blue-50 hover:bg-blue-600 rounded-xl border border-blue-100 transition-all active:scale-95">Review</button>
+                   <div *ngIf="!authService.isAuthenticated" class="flex flex-col items-center">
+                      <lucide-icon name="lock" [size]="14" class="text-slate-200"></lucide-icon>
+                      <span class="text-[8px] font-black text-slate-300 uppercase mt-1">Locked</span>
+                   </div>
                 </td>
               </tr>
             </tbody>
           </table>
-          <div *ngIf="paginatedDeals().length === 0" class="flex flex-col items-center justify-center py-24 text-slate-400 gap-4">
-            <lucide-icon name="filter" [size]="48" class="text-slate-200"></lucide-icon>
-            <p class="text-sm font-medium">No customers found matching these criteria.</p>
+          
+          <div *ngIf="paginatedDeals().length === 0" class="flex flex-col items-center justify-center py-32 text-slate-400 gap-6">
+            <div class="p-6 bg-slate-50 rounded-[2rem] border border-slate-100">
+               <lucide-icon name="filter" [size]="48" class="text-slate-200"></lucide-icon>
+            </div>
+            <p class="text-[11px] font-black uppercase tracking-[0.2em]">Zero Entity Matched</p>
           </div>
         </div>
 
-        <!-- Pagination -->
-        <div class="p-4 bg-white border-t border-slate-100 flex items-center justify-between">
-           <div class="text-xs text-slate-500 font-medium">
-             Page {{ page() }} of {{ max(1, totalPages()) }}
+        <!-- Pagination Cockpit -->
+        <div class="p-6 bg-slate-50 border-t border-slate-50 flex items-center justify-between">
+           <div class="text-[10px] text-slate-400 font-black uppercase tracking-widest">
+             Batch {{ page() }} / {{ max(1, totalPages()) }}
            </div>
-           <div class="flex items-center gap-1">
-              <button [disabled]="page() === 1" (click)="setPage(page() - 1)" class="p-1.5 rounded-md hover:bg-slate-100 disabled:opacity-30 disabled:hover:bg-transparent transition-colors text-slate-600">
+           <div class="flex items-center gap-2">
+              <button [disabled]="page() === 1" (click)="setPage(page() - 1)" 
+                class="w-10 h-10 rounded-2xl flex items-center justify-center hover:bg-white border border-transparent hover:border-slate-200 disabled:opacity-20 transition-all text-slate-600 shadow-sm active:scale-90">
                 <lucide-icon name="chevron-left" [size]="18"></lucide-icon>
               </button>
               
-              <button *ngFor="let p of pages()" (click)="setPage(p)" 
-                class="w-8 h-8 rounded-md text-xs font-bold transition-all"
-                [ngClass]="page() === p ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20' : 'hover:bg-slate-100 text-slate-500'">
-                {{ p }}
-              </button>
+              <div class="flex items-center gap-1.5 px-2">
+                <button *ngFor="let p of pages()" (click)="setPage(p)" 
+                  class="w-9 h-9 rounded-xl text-[10px] font-black transition-all border"
+                  [ngClass]="page() === p ? 'bg-slate-950 text-white border-slate-950 shadow-lg' : 'bg-white hover:bg-slate-50 text-slate-400 border-slate-100'">
+                  {{ p }}
+                </button>
+              </div>
 
-              <button [disabled]="page() >= totalPages()" (click)="setPage(page() + 1)" class="p-1.5 rounded-md hover:bg-slate-100 disabled:opacity-30 disabled:hover:bg-transparent transition-colors text-slate-600">
+              <button [disabled]="page() >= totalPages()" (click)="setPage(page() + 1)" 
+                class="w-10 h-10 rounded-2xl flex items-center justify-center hover:bg-white border border-transparent hover:border-slate-200 disabled:opacity-20 transition-all text-slate-600 shadow-sm active:scale-90">
                 <lucide-icon name="chevron-right" [size]="18"></lucide-icon>
               </button>
            </div>
