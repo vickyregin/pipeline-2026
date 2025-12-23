@@ -6,10 +6,10 @@ import { LucideAngularModule } from 'lucide-angular';
 import { SalesService } from '../../services/sales.service';
 
 @Component({
-    selector: 'app-add-deal-modal',
-    standalone: true,
-    imports: [CommonModule, FormsModule, LucideAngularModule],
-    template: `
+   selector: 'app-add-deal-modal',
+   standalone: true,
+   imports: [CommonModule, FormsModule, LucideAngularModule],
+   template: `
     <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-in fade-in duration-200">
       <div class="bg-white rounded-xl shadow-xl w-full max-w-lg border border-slate-200 overflow-hidden animate-in zoom-in-95 duration-200">
         <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
@@ -26,7 +26,7 @@ import { SalesService } from '../../services/sales.service';
               <input type="text" [(ngModel)]="formData.title" name="title" required class="w-full px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm font-medium" placeholder="e.g. Enterprise License Q4">
             </div>
 
-            <div class="grid grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5">Customer</label>
                 <input type="text" [(ngModel)]="formData.customerName" name="customerName" required class="w-full px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm font-medium" placeholder="Company Name">
@@ -37,7 +37,7 @@ import { SalesService } from '../../services/sales.service';
               </div>
             </div>
 
-            <div class="grid grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                <div>
                   <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5">Stage</label>
                   <select [(ngModel)]="formData.stage" name="stage" class="w-full px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm font-medium bg-white">
@@ -50,7 +50,7 @@ import { SalesService } from '../../services/sales.service';
                </div>
             </div>
 
-            <div class="grid grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                <div>
                   <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5">Category</label>
                   <select [(ngModel)]="formData.category" name="category" class="w-full px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm font-medium bg-white">
@@ -94,53 +94,53 @@ import { SalesService } from '../../services/sales.service';
   `
 })
 export class AddDealModalComponent {
-    @Input() deal: Deal | null = null;
-    @Output() close = new EventEmitter<void>();
-    @Output() save = new EventEmitter<Partial<Deal>>();
-    @Output() delete = new EventEmitter<string>();
+   @Input() deal: Deal | null = null;
+   @Output() close = new EventEmitter<void>();
+   @Output() save = new EventEmitter<Partial<Deal>>();
+   @Output() delete = new EventEmitter<string>();
 
-    salesService = inject(SalesService); // to get reps
+   salesService = inject(SalesService); // to get reps
 
-    formData: Partial<Deal> = {
-        title: '',
-        customerName: '',
-        value: 0,
-        stage: DealStage.LEAD,
-        probability: 20,
-        category: DealCategory.TECHNOLOGY,
-        businessType: BusinessType.NEW,
-        notes: '',
-        assignedRepId: ''
-    };
+   formData: Partial<Deal> = {
+      title: '',
+      customerName: '',
+      value: 0,
+      stage: DealStage.LEAD,
+      probability: 20,
+      category: DealCategory.TECHNOLOGY,
+      businessType: BusinessType.NEW,
+      notes: '',
+      assignedRepId: ''
+   };
 
-    stages = Object.values(DealStage);
-    categories = Object.values(DealCategory);
-    businessTypes = BusinessType;
+   stages = Object.values(DealStage);
+   categories = Object.values(DealCategory);
+   businessTypes = BusinessType;
 
-    get isEditing() {
-        return !!this.deal;
-    }
+   get isEditing() {
+      return !!this.deal;
+   }
 
-    ngOnChanges() {
-        if (this.deal) {
-            this.formData = { ...this.deal };
-        } else {
-            // Reset or Default
-            this.formData = {
-                title: '',
-                customerName: '',
-                value: 0,
-                stage: DealStage.LEAD,
-                probability: 20,
-                category: DealCategory.TECHNOLOGY,
-                businessType: BusinessType.NEW,
-                notes: '',
-                assignedRepId: this.salesService.reps()[0]?.id || ''
-            };
-        }
-    }
+   ngOnChanges() {
+      if (this.deal) {
+         this.formData = { ...this.deal };
+      } else {
+         // Reset or Default
+         this.formData = {
+            title: '',
+            customerName: '',
+            value: 0,
+            stage: DealStage.LEAD,
+            probability: 20,
+            category: DealCategory.TECHNOLOGY,
+            businessType: BusinessType.NEW,
+            notes: '',
+            assignedRepId: this.salesService.reps()[0]?.id || ''
+         };
+      }
+   }
 
-    submit() {
-        this.save.emit(this.formData);
-    }
+   submit() {
+      this.save.emit(this.formData);
+   }
 }

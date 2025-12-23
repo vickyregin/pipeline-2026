@@ -16,24 +16,31 @@
       <app-sidebar (openSchema)="isSchemaModalOpen.set(true)"></app-sidebar>
 
       <!-- Main Visual Wrapper -->
-      <main class="flex-1 flex flex-col h-full overflow-hidden relative">
+      <main class="flex-1 flex flex-col h-full overflow-hidden relative w-full">
 
         <!-- Premium Glass Header -->
         <header
-          class="h-20 bg-white/70 backdrop-blur-xl border-b border-white/40 flex items-center justify-between px-8 z-30 flex-shrink-0 shadow-sm shadow-black/5">
-          <div class="flex items-center gap-6">
+          class="h-20 bg-white/70 backdrop-blur-xl border-b border-white/40 flex items-center justify-between px-4 md:px-8 z-30 flex-shrink-0 shadow-sm shadow-black/5">
+          <div class="flex items-center gap-3 md:gap-6">
+            <!-- Mobile Menu Toggle -->
+            <button (click)="sidebarService.toggle()"
+              class="lg:hidden p-2 text-slate-600 hover:bg-slate-100 rounded-xl transition-colors">
+              <lucide-icon name="menu" [size]="24"></lucide-icon>
+            </button>
+
             <div class="flex flex-col">
               <span
-                class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] leading-none mb-1">Navigation /
+                class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] leading-none mb-1 hidden md:block">Navigation
+                /
                 Context</span>
-              <h2 class="text-2xl font-black text-slate-900 tracking-tight flex items-center gap-3">
+              <h2 class="text-lg md:text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2 md:gap-3">
                 {{ activeTab() }}
-                <div class="w-1 h-1 bg-slate-200 rounded-full"></div>
+                <div class="w-1 h-1 bg-slate-200 rounded-full hidden md:block"></div>
               </h2>
             </div>
 
             <div *ngIf="activeTab() === 'Pipeline'"
-              class="hidden md:flex items-center gap-3 px-4 py-2 bg-white rounded-2xl border border-slate-100 shadow-sm animate-in fade-in slide-in-from-left-4 duration-500">
+              class="hidden lg:flex items-center gap-3 px-4 py-2 bg-white rounded-2xl border border-slate-100 shadow-sm animate-in fade-in slide-in-from-left-4 duration-500">
               <div class="flex h-6 w-6 items-center justify-center bg-blue-50 text-blue-600 rounded-lg">
                 <lucide-icon name="target" [size]="14"></lucide-icon>
               </div>
@@ -41,25 +48,28 @@
             </div>
           </div>
 
-          <div class="flex items-center gap-5">
+          <div class="flex items-center gap-2 md:gap-5">
             <!-- Action Center -->
-            <div class="flex items-center gap-2 p-1.5 bg-slate-100/50 rounded-2xl border border-slate-200">
+            <div class="flex items-center gap-2 p-1 md:p-1.5 bg-slate-100/50 rounded-2xl border border-slate-200">
               <button *ngIf="authService.isAuthenticated" (click)="salesService.openDealModal()"
-                class="group flex items-center gap-2 bg-slate-900 hover:bg-blue-600 text-white px-5 py-2.5 rounded-xl text-xs font-bold transition-all shadow-xl shadow-black/10 active:scale-95 cursor-pointer">
+                class="group flex items-center gap-2 bg-slate-900 hover:bg-blue-600 text-white px-3 md:px-5 py-2 md:py-2.5 rounded-xl text-[10px] md:text-xs font-bold transition-all shadow-xl shadow-black/10 active:scale-95 cursor-pointer">
                 <lucide-icon name="plus" [size]="16"
                   class="group-hover:rotate-90 transition-transform duration-300"></lucide-icon>
-                Initiate New Deal
+                <span class="hidden sm:inline">Initiate New Deal</span>
+                <span class="sm:hidden">New Deal</span>
               </button>
 
               <button *ngIf="!authService.isAuthenticated" routerLink="/login"
-                class="flex items-center gap-2 bg-white hover:bg-slate-50 text-slate-900 px-5 py-2.5 rounded-xl text-xs font-bold transition-all border border-slate-200 shadow-sm active:scale-95 cursor-pointer">
-                <lucide-icon name="lock" [size]="16"></lucide-icon> Restricted Access
+                class="flex items-center gap-2 bg-white hover:bg-slate-50 text-slate-900 px-3 md:px-5 py-2 md:py-2.5 rounded-xl text-[10px] md:text-xs font-bold transition-all border border-slate-200 shadow-sm active:scale-95 cursor-pointer">
+                <lucide-icon name="lock" [size]="16"></lucide-icon>
+                <span class="hidden sm:inline">Restricted Access</span>
+                <span class="sm:hidden">Login</span>
               </button>
             </div>
 
             <!-- User Profile Section -->
-            <div class="flex items-center gap-3 pl-5 border-l border-slate-200">
-              <div *ngIf="authService.isAuthenticated" class="flex flex-col items-end">
+            <div class="flex items-center gap-2 md:gap-3 md:pl-5 md:border-l border-slate-200">
+              <div *ngIf="authService.isAuthenticated" class="hidden md:flex flex-col items-end">
                 <span class="text-xs font-black text-slate-800 tracking-tight">{{ authService.user()?.username }}</span>
                 <button (click)="authService.signOut()"
                   class="text-[9px] font-black text-slate-400 hover:text-red-500 transition-colors uppercase tracking-widest bg-slate-50 px-2 py-0.5 rounded border border-slate-100 mt-1">
@@ -69,15 +79,16 @@
 
               <div class="relative">
                 <div
-                  class="h-11 w-11 bg-gradient-to-tr from-slate-200 to-slate-300 rounded-2xl flex items-center justify-center border-2 border-white shadow-lg overflow-hidden transition-transform hover:scale-105">
-                  <span *ngIf="!authService.isAuthenticated" class="text-slate-500 font-bold text-lg italic">?</span>
+                  class="h-9 w-9 md:h-11 md:w-11 bg-gradient-to-tr from-slate-200 to-slate-300 rounded-xl md:rounded-2xl flex items-center justify-center border-2 border-white shadow-lg overflow-hidden transition-transform hover:scale-105">
+                  <span *ngIf="!authService.isAuthenticated"
+                    class="text-slate-500 font-bold text-base md:text-lg italic">?</span>
                   <div *ngIf="authService.isAuthenticated"
-                    class="w-full h-full bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white font-black text-lg">
+                    class="w-full h-full bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white font-black text-base md:text-lg">
                     {{ authService.user()?.username?.[0] }}
                   </div>
                 </div>
                 <div *ngIf="authService.isAuthenticated"
-                  class="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-emerald-500 border-2 border-white rounded-full">
+                  class="absolute -bottom-0.5 -right-0.5 w-3 w-3 md:w-3.5 md:h-3.5 bg-emerald-500 border-2 border-white rounded-full">
                 </div>
               </div>
             </div>

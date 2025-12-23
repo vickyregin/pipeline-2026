@@ -10,11 +10,11 @@ import { InrPipe } from '../../pipes/inr.pipe';
 import { GeminiService } from '../../services/gemini.service';
 
 @Component({
-    selector: 'app-dashboard',
-    standalone: true,
-    imports: [CommonModule, LucideAngularModule, BaseChartDirective, InrPipe],
-    template: `
-    <div class="space-y-8 animate-in fade-in duration-700 pb-12 p-8">
+   selector: 'app-dashboard',
+   standalone: true,
+   imports: [CommonModule, LucideAngularModule, BaseChartDirective, InrPipe],
+   template: `
+    <div class="space-y-4 md:space-y-8 animate-in fade-in duration-700 pb-12 p-4 md:p-8">
       
       <!-- Top Stats Hero -->
       <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
@@ -192,55 +192,55 @@ import { GeminiService } from '../../services/gemini.service';
          </div>
          <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
-               <thead>
-                  <tr class="bg-slate-50/50">
-                     <th class="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest">Individual Agent</th>
-                     <th class="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">Target Quota</th>
-                     <th class="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">Yield (WON)</th>
-                     <th class="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest">Attainment %</th>
-                     <th class="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">Pipeline</th>
-                     <th class="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">Precision</th>
-                  </tr>
-               </thead>
-               <tbody class="divide-y divide-slate-50">
-                  <tr *ngFor="let rep of repPerformance(); let idx = index" class="hover:bg-blue-50/30 group transition-all duration-300">
-                     <td class="px-8 py-6">
-                        <div class="flex items-center gap-4">
-                           <div class="relative">
-                              <div class="w-12 h-12 rounded-2xl bg-slate-100 border-2 border-white shadow-sm overflow-hidden transition-transform group-hover:scale-110">
-                                 <img [src]="rep.avatar" class="w-full h-full object-cover" />
-                              </div>
-                              <div *ngIf="idx === 0" class="absolute -top-1.5 -right-1.5 bg-amber-400 text-white rounded-lg p-1 shadow-lg shadow-amber-500/30">
-                                <lucide-icon name="trophy" [size]="10" fill="currentColor"></lucide-icon>
-                              </div>
-                           </div>
-                           <div>
-                              <div class="font-black text-slate-900 text-sm tracking-tight">{{ rep.name }}</div>
-                              <div class="text-[10px] text-slate-400 font-bold uppercase tracking-tight">Active Duty</div>
-                           </div>
-                        </div>
-                     </td>
-                     <td class="px-8 py-6 text-right text-slate-500 font-black text-xs tabular-nums">{{ rep.quota | inr }}</td>
-                     <td class="px-8 py-6 text-right font-black text-slate-900 text-sm tabular-nums">{{ rep.revenue | inr }}</td>
-                     <td class="px-8 py-6">
-                        <div class="flex items-center gap-3">
-                           <div class="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden min-w-[100px] border border-slate-200">
-                              <div class="h-full rounded-full transition-all duration-1000 bg-gradient-to-r"
-                                   [ngClass]="rep.achievement >= 100 ? 'from-emerald-400 to-teal-500 shadow-[0_0_10px_rgba(16,185,129,0.3)]' : 'from-blue-500 to-indigo-600'"
-                                   [style.width.%]="rep.achievement > 100 ? 100 : rep.achievement"></div>
-                           </div>
-                           <span class="text-xs font-black w-10" [ngClass]="rep.achievement >= 100 ? 'text-emerald-500' : 'text-slate-900'">{{ rep.achievement.toFixed(0) }}%</span>
-                        </div>
-                     </td>
-                     <td class="px-8 py-6 text-right text-slate-500 text-xs font-black tabular-nums">{{ rep.pipeline | inr }}</td>
-                     <td class="px-8 py-6 text-right">
-                        <span class="px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest border"
-                              [ngClass]="rep.winRate > 60 ? 'bg-emerald-50 text-emerald-600 border-emerald-100' : rep.winRate > 30 ? 'bg-blue-50 text-blue-600 border-blue-100' : 'bg-slate-50 text-slate-500 border-slate-200'">
-                           {{ rep.winRate.toFixed(0) }}% ACC
-                        </span>
-                     </td>
-                  </tr>
-               </tbody>
+                <thead>
+                   <tr class="bg-slate-50/50">
+                      <th class="px-4 md:px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest">Individual Agent</th>
+                      <th class="hidden md:table-cell px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">Target Quota</th>
+                      <th class="px-4 md:px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">Yield (WON)</th>
+                      <th class="px-4 md:px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest">Attainment %</th>
+                      <th class="hidden lg:table-cell px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">Pipeline</th>
+                      <th class="hidden xl:table-cell px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">Precision</th>
+                   </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-50">
+                   <tr *ngFor="let rep of repPerformance(); let idx = index" class="hover:bg-blue-50/30 group transition-all duration-300">
+                      <td class="px-4 md:px-8 py-6">
+                         <div class="flex items-center gap-3 md:gap-4">
+                            <div class="relative">
+                               <div class="w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-slate-100 border-2 border-white shadow-sm overflow-hidden transition-transform group-hover:scale-110">
+                                  <img [src]="rep.avatar" class="w-full h-full object-cover" />
+                               </div>
+                               <div *ngIf="idx === 0" class="absolute -top-1.5 -right-1.5 bg-amber-400 text-white rounded-lg p-1 shadow-lg shadow-amber-500/30">
+                                 <lucide-icon name="trophy" [size]="10" fill="currentColor"></lucide-icon>
+                               </div>
+                            </div>
+                            <div>
+                               <div class="font-black text-slate-900 text-xs md:text-sm tracking-tight">{{ rep.name }}</div>
+                               <div class="text-[9px] md:text-[10px] text-slate-400 font-bold uppercase tracking-tight">Active Duty</div>
+                            </div>
+                         </div>
+                      </td>
+                      <td class="hidden md:table-cell px-8 py-6 text-right text-slate-500 font-black text-xs tabular-nums">{{ rep.quota | inr }}</td>
+                      <td class="px-4 md:px-8 py-6 text-right font-black text-slate-900 text-xs md:text-sm tabular-nums">{{ rep.revenue | inr }}</td>
+                      <td class="px-4 md:px-8 py-6">
+                         <div class="flex items-center gap-3">
+                            <div class="hidden sm:block flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden min-w-[60px] md:min-w-[100px] border border-slate-200">
+                               <div class="h-full rounded-full transition-all duration-1000 bg-gradient-to-r"
+                                    [ngClass]="rep.achievement >= 100 ? 'from-emerald-400 to-teal-500 shadow-[0_0_10px_rgba(16,185,129,0.3)]' : 'from-blue-500 to-indigo-600'"
+                                    [style.width.%]="rep.achievement > 100 ? 100 : rep.achievement"></div>
+                            </div>
+                            <span class="text-[10px] md:text-xs font-black w-8 md:w-10" [ngClass]="rep.achievement >= 100 ? 'text-emerald-500' : 'text-slate-900'">{{ rep.achievement.toFixed(0) }}%</span>
+                         </div>
+                      </td>
+                      <td class="hidden lg:table-cell px-8 py-6 text-right text-slate-500 text-xs font-black tabular-nums">{{ rep.pipeline | inr }}</td>
+                      <td class="hidden xl:table-cell px-8 py-6 text-right">
+                         <span class="px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest border"
+                               [ngClass]="rep.winRate > 60 ? 'bg-emerald-50 text-emerald-600 border-emerald-100' : rep.winRate > 30 ? 'bg-blue-50 text-blue-600 border-blue-100' : 'bg-slate-50 text-slate-500 border-slate-200'">
+                            {{ rep.winRate.toFixed(0) }}% ACC
+                         </span>
+                      </td>
+                   </tr>
+                </tbody>
             </table>
          </div>
       </div>
@@ -248,151 +248,151 @@ import { GeminiService } from '../../services/gemini.service';
   `
 })
 export class DashboardComponent {
-    salesService = inject(SalesService);
-    gemini = inject(GeminiService);
+   salesService = inject(SalesService);
+   gemini = inject(GeminiService);
 
-    aiAnalysis = signal<string>('');
-    isAnalyzing = signal<boolean>(false);
+   aiAnalysis = signal<string>('');
+   isAnalyzing = signal<boolean>(false);
 
-    stageMixData = computed<ChartConfiguration<'bar'>['data']>(() => {
-        const deals = this.salesService.deals();
-        const data = STAGE_CONFIG.map(stage =>
-            deals.filter(d => d.stage === stage.id).reduce((sum, d) => sum + d.value, 0)
-        );
-        const colors = ['rgba(203, 213, 225, 0.4)', 'rgba(96, 165, 250, 0.8)', 'rgba(129, 140, 248, 0.8)', 'rgba(167, 139, 250, 0.8)', 'rgba(16, 185, 129, 0.8)', 'rgba(239, 68, 68, 0.8)'];
+   stageMixData = computed<ChartConfiguration<'bar'>['data']>(() => {
+      const deals = this.salesService.deals();
+      const data = STAGE_CONFIG.map(stage =>
+         deals.filter(d => d.stage === stage.id).reduce((sum, d) => sum + d.value, 0)
+      );
+      const colors = ['rgba(203, 213, 225, 0.4)', 'rgba(96, 165, 250, 0.8)', 'rgba(129, 140, 248, 0.8)', 'rgba(167, 139, 250, 0.8)', 'rgba(16, 185, 129, 0.8)', 'rgba(239, 68, 68, 0.8)'];
 
-        return {
-            labels: STAGE_CONFIG.map(s => s.label),
-            datasets: [
-                { data, backgroundColor: colors, borderRadius: 12, barThickness: 16 }
-            ]
-        };
-    });
+      return {
+         labels: STAGE_CONFIG.map(s => s.label),
+         datasets: [
+            { data, backgroundColor: colors, borderRadius: 12, barThickness: 16 }
+         ]
+      };
+   });
 
-    businessTypeData = computed<ChartConfiguration<'bar'>['data']>(() => {
-        const deals = this.salesService.deals();
-        const types = [BusinessType.NEW, BusinessType.EXISTING];
-        const data = types.map(type =>
-            deals.filter(d => d.businessType === type).reduce((sum, d) => sum + d.value, 0)
-        );
-        return {
-            labels: ['New Venture', 'Retain/Exst'],
-            datasets: [
-                { data, backgroundColor: ['#f97316', '#cbd5e1'], borderRadius: 12, barThickness: 24 }
-            ]
-        };
-    });
+   businessTypeData = computed<ChartConfiguration<'bar'>['data']>(() => {
+      const deals = this.salesService.deals();
+      const types = [BusinessType.NEW, BusinessType.EXISTING];
+      const data = types.map(type =>
+         deals.filter(d => d.businessType === type).reduce((sum, d) => sum + d.value, 0)
+      );
+      return {
+         labels: ['New Venture', 'Retain/Exst'],
+         datasets: [
+            { data, backgroundColor: ['#f97316', '#cbd5e1'], borderRadius: 12, barThickness: 24 }
+         ]
+      };
+   });
 
-    trajectoryData = computed<ChartConfiguration<'line'>['data']>(() => {
-        const deals = this.salesService.deals();
-        const dataRecords: Record<string, number> = {};
-        const wonWon = deals.filter(d => d.stage === DealStage.CLOSED_WON);
+   trajectoryData = computed<ChartConfiguration<'line'>['data']>(() => {
+      const deals = this.salesService.deals();
+      const dataRecords: Record<string, number> = {};
+      const wonWon = deals.filter(d => d.stage === DealStage.CLOSED_WON);
 
-        // Fill with last 6 months
-        const months = [];
-        for (let i = 5; i >= 0; i--) {
-            const d = new Date();
-            d.setMonth(d.getMonth() - i);
-            const name = d.toLocaleString('default', { month: 'short' });
-            months.push(name);
-            dataRecords[name] = 0;
-        }
+      // Fill with last 6 months
+      const months = [];
+      for (let i = 5; i >= 0; i--) {
+         const d = new Date();
+         d.setMonth(d.getMonth() - i);
+         const name = d.toLocaleString('default', { month: 'short' });
+         months.push(name);
+         dataRecords[name] = 0;
+      }
 
-        wonWon.forEach(d => {
-            const m = new Date(d.closeDate).toLocaleString('default', { month: 'short' });
-            if (dataRecords[m] !== undefined) dataRecords[m] += d.value;
-        });
+      wonWon.forEach(d => {
+         const m = new Date(d.closeDate).toLocaleString('default', { month: 'short' });
+         if (dataRecords[m] !== undefined) dataRecords[m] += d.value;
+      });
 
-        return {
-            labels: months,
-            datasets: [
-                {
-                    data: Object.values(dataRecords),
-                    borderColor: '#10b981',
-                    borderWidth: 4,
-                    backgroundColor: (context: any) => {
-                        const chart = context.chart;
-                        const { ctx, chartArea } = chart;
-                        if (!chartArea) return null;
-                        const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
-                        gradient.addColorStop(0, 'rgba(16, 185, 129, 0)');
-                        gradient.addColorStop(1, 'rgba(16, 185, 129, 0.15)');
-                        return gradient;
-                    },
-                    fill: true,
-                    tension: 0.4,
-                    pointBackgroundColor: '#10b981',
-                    pointBorderColor: '#fff',
-                    pointBorderWidth: 4,
-                    pointRadius: 6,
-                    pointHoverRadius: 8
-                }
-            ]
-        };
-    });
-
-    repPerformance = computed(() => {
-        const deals = this.salesService.deals();
-        const reps = this.salesService.reps();
-        return reps.map(rep => {
-            const repDeals = deals.filter(d => d.assignedRepId === rep.id);
-            const won = repDeals.filter(d => d.stage === DealStage.CLOSED_WON);
-            const lost = repDeals.filter(d => d.stage === DealStage.CLOSED_LOST);
-            const active = repDeals.filter(d => d.stage !== DealStage.CLOSED_WON && d.stage !== DealStage.CLOSED_LOST);
-            const revenue = won.reduce((acc, d) => acc + d.value, 0);
-            const pipeline = active.reduce((acc, d) => acc + d.value, 0);
-            const totalClosed = won.length + lost.length;
-            const winRate = totalClosed > 0 ? (won.length / totalClosed) * 100 : 0;
-            const achievement = rep.quota ? (revenue / rep.quota) * 100 : 0;
-            return { ...rep, revenue, pipeline, winRate, achievement };
-        }).sort((a, b) => b.achievement - a.achievement);
-    });
-
-    barOptions: ChartOptions<'bar'> = {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: { legend: { display: false } },
-        scales: {
-            x: { grid: { display: false }, border: { display: false }, ticks: { font: { size: 10, weight: 'bold' } } },
-            y: { display: false }
-        }
-    };
-
-    horizontalBarOptions: ChartOptions<'bar'> = {
-        indexAxis: 'y',
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: { legend: { display: false } },
-        scales: {
-            x: { display: false },
-            y: { grid: { display: false }, border: { display: false }, ticks: { font: { size: 10, weight: 'bold' } } }
-        }
-    };
-
-    lineOptions: ChartOptions<'line'> = {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: { display: false },
-            tooltip: {
-                backgroundColor: '#0f172a',
-                titleFont: { size: 12, weight: 'bold' },
-                bodyFont: { size: 12 },
-                padding: 12,
-                cornerRadius: 12,
-                displayColors: false
+      return {
+         labels: months,
+         datasets: [
+            {
+               data: Object.values(dataRecords),
+               borderColor: '#10b981',
+               borderWidth: 4,
+               backgroundColor: (context: any) => {
+                  const chart = context.chart;
+                  const { ctx, chartArea } = chart;
+                  if (!chartArea) return null;
+                  const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
+                  gradient.addColorStop(0, 'rgba(16, 185, 129, 0)');
+                  gradient.addColorStop(1, 'rgba(16, 185, 129, 0.15)');
+                  return gradient;
+               },
+               fill: true,
+               tension: 0.4,
+               pointBackgroundColor: '#10b981',
+               pointBorderColor: '#fff',
+               pointBorderWidth: 4,
+               pointRadius: 6,
+               pointHoverRadius: 8
             }
-        },
-        scales: {
-            x: { grid: { display: false }, border: { display: false }, ticks: { font: { size: 11, weight: 'bold' } } },
-            y: { display: false }
-        }
-    };
+         ]
+      };
+   });
 
-    async runAiAnalysis() {
-        this.isAnalyzing.set(true);
-        const analysis = await this.gemini.analyzePipeline(this.salesService.deals(), this.salesService.reps());
-        this.aiAnalysis.set(analysis);
-        this.isAnalyzing.set(false);
-    }
+   repPerformance = computed(() => {
+      const deals = this.salesService.deals();
+      const reps = this.salesService.reps();
+      return reps.map(rep => {
+         const repDeals = deals.filter(d => d.assignedRepId === rep.id);
+         const won = repDeals.filter(d => d.stage === DealStage.CLOSED_WON);
+         const lost = repDeals.filter(d => d.stage === DealStage.CLOSED_LOST);
+         const active = repDeals.filter(d => d.stage !== DealStage.CLOSED_WON && d.stage !== DealStage.CLOSED_LOST);
+         const revenue = won.reduce((acc, d) => acc + d.value, 0);
+         const pipeline = active.reduce((acc, d) => acc + d.value, 0);
+         const totalClosed = won.length + lost.length;
+         const winRate = totalClosed > 0 ? (won.length / totalClosed) * 100 : 0;
+         const achievement = rep.quota ? (revenue / rep.quota) * 100 : 0;
+         return { ...rep, revenue, pipeline, winRate, achievement };
+      }).sort((a, b) => b.achievement - a.achievement);
+   });
+
+   barOptions: ChartOptions<'bar'> = {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+         x: { grid: { display: false }, border: { display: false }, ticks: { font: { size: 10, weight: 'bold' } } },
+         y: { display: false }
+      }
+   };
+
+   horizontalBarOptions: ChartOptions<'bar'> = {
+      indexAxis: 'y',
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+         x: { display: false },
+         y: { grid: { display: false }, border: { display: false }, ticks: { font: { size: 10, weight: 'bold' } } }
+      }
+   };
+
+   lineOptions: ChartOptions<'line'> = {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+         legend: { display: false },
+         tooltip: {
+            backgroundColor: '#0f172a',
+            titleFont: { size: 12, weight: 'bold' },
+            bodyFont: { size: 12 },
+            padding: 12,
+            cornerRadius: 12,
+            displayColors: false
+         }
+      },
+      scales: {
+         x: { grid: { display: false }, border: { display: false }, ticks: { font: { size: 11, weight: 'bold' } } },
+         y: { display: false }
+      }
+   };
+
+   async runAiAnalysis() {
+      this.isAnalyzing.set(true);
+      const analysis = await this.gemini.analyzePipeline(this.salesService.deals(), this.salesService.reps());
+      this.aiAnalysis.set(analysis);
+      this.isAnalyzing.set(false);
+   }
 }
