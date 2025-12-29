@@ -18,9 +18,9 @@ import { InrPipe } from '../../pipes/inr.pipe';
       <!-- Top Intelligence Bar -->
       <div class="bg-white/80 backdrop-blur-md border-b border-slate-100 px-4 md:px-8 py-3 md:py-4 flex flex-col lg:flex-row gap-4 md:gap-6 items-start lg:items-center relative z-20 shadow-sm">
           <div class="relative flex-1 w-full lg:w-96 group">
-            <lucide-icon name="search" class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500 transition-colors" [size]="16"></lucide-icon>
+            <lucide-icon name="search" class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-red-500 transition-colors" [size]="16"></lucide-icon>
             <input type="text" placeholder="Search operational deals..." [(ngModel)]="searchTerm" 
-               class="pl-12 pr-4 py-2.5 text-xs border border-slate-100 rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500/50 outline-none w-full bg-slate-50 transition-all font-bold placeholder:font-medium placeholder:text-slate-400" />
+               class="pl-12 pr-4 py-2.5 text-xs border border-slate-100 rounded-2xl focus:ring-4 focus:ring-red-500/10 focus:border-red-500/50 outline-none w-full bg-slate-50 transition-all font-bold placeholder:font-medium placeholder:text-slate-400" />
           </div>
           
           <div class="flex flex-wrap gap-2 md:gap-3 w-full lg:w-auto">
@@ -46,7 +46,7 @@ import { InrPipe } from '../../pipes/inr.pipe';
                 <span class="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em]">Active Capital</span>
                 <span class="text-sm font-black text-slate-900">{{ getTotalPipeline() | inr }}</span>
              </div>
-             <div class="p-2 bg-blue-50 text-blue-600 rounded-xl">
+             <div class="p-2 bg-red-50 text-red-600 rounded-xl">
                 <lucide-icon name="activity" [size]="18"></lucide-icon>
              </div>
           </div>

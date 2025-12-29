@@ -11,11 +11,11 @@ import { AuthService } from '../../services/auth.service';
   standalone: true,
   imports: [CommonModule, LucideAngularModule, InrPipe, FormsModule],
   template: `
-    <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 hover:shadow-xl hover:shadow-blue-500/5 hover:-translate-y-1 transition-all duration-300 group relative overflow-hidden">
+    <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 hover:shadow-xl hover:shadow-red-500/5 hover:-translate-y-1 transition-all duration-300 group relative overflow-hidden">
       <!-- Top Accent Line -->
       <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r opacity-0 group-hover:opacity-100 transition-opacity"
            [ngClass]="{
-             'from-blue-500 to-indigo-600': deal.category === 'Technology',
+             'from-red-500 to-red-600': deal.category === 'Technology',
              'from-emerald-400 to-emerald-600': deal.category === 'Finance',
              'from-purple-500 to-indigo-500': deal.category === 'Retail',
              'from-orange-400 to-red-500': deal.category === 'Manufacturing',
@@ -25,7 +25,7 @@ import { AuthService } from '../../services/auth.service';
       <div class="flex justify-between items-start mb-3">
         <span class="text-[9px] font-black uppercase tracking-widest px-2 py-1 rounded-lg border"
               [ngClass]="{
-                'bg-blue-50 text-blue-600 border-blue-100': deal.category === 'Technology',
+                'bg-red-50 text-red-600 border-red-100': deal.category === 'Technology',
                 'bg-emerald-50 text-emerald-600 border-emerald-100': deal.category === 'Finance',
                 'bg-purple-50 text-purple-600 border-purple-100': deal.category === 'Retail',
                 'bg-orange-50 text-orange-600 border-orange-100': deal.category === 'Manufacturing',
@@ -35,7 +35,7 @@ import { AuthService } from '../../services/auth.service';
         </span>
         
         <div *ngIf="authService.isAuthenticated" class="flex gap-1 opacity-0 group-hover:opacity-100 transition-all transform translate-x-2 group-hover:translate-x-0">
-           <button (click)="onEdit.emit(deal)" class="p-1.5 hover:bg-slate-100 rounded-lg text-slate-400 hover:text-blue-600 transition-colors">
+           <button (click)="onEdit.emit(deal)" class="p-1.5 hover:bg-slate-100 rounded-lg text-slate-400 hover:text-red-600 transition-colors">
              <lucide-icon name="edit-2" [size]="14"></lucide-icon>
            </button>
         </div>
@@ -56,7 +56,7 @@ import { AuthService } from '../../services/auth.service';
            <p class="text-[9px] text-slate-400 font-black uppercase tracking-widest mb-0.5">Confidence</p>
            <p class="font-black text-sm" [ngClass]="{
              'text-emerald-500': deal.probability > 70,
-             'text-blue-500': deal.probability > 40 && deal.probability <= 70,
+             'text-red-500': deal.probability > 40 && deal.probability <= 70,
              'text-amber-500': deal.probability <= 40
            }">{{ deal.probability }}%</p>
         </div>
@@ -68,7 +68,7 @@ import { AuthService } from '../../services/auth.service';
               [ngStyle]="{ width: deal.probability + '%' }"
               [ngClass]="{
                  'bg-emerald-500': deal.probability > 70,
-                 'bg-blue-500': deal.probability > 40 && deal.probability <= 70,
+                 'bg-red-500': deal.probability > 40 && deal.probability <= 70,
                  'bg-amber-500': deal.probability <= 40
               }"></div>
       </div>

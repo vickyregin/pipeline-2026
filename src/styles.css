@@ -2,9 +2,9 @@
 
 @layer base {
     :root {
-        --brand-primary: #3b82f6;
-        --brand-secondary: #6366f1;
-        --sidebar-bg: #0f172a;
+        --brand-primary: #CA3436;
+        --brand-secondary: #303030;
+        --sidebar-bg: #303030;
         --glass-bg: rgba(255, 255, 255, 0.7);
         --glass-border: rgba(255, 255, 255, 0.2);
     }

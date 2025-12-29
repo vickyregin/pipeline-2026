@@ -3,15 +3,15 @@ import { CommonModule } from '@angular/common';
 import { LucideAngularModule } from 'lucide-angular';
 
 @Component({
-    selector: 'app-schema-modal',
-    standalone: true,
-    imports: [CommonModule, LucideAngularModule],
-    template: `
+  selector: 'app-schema-modal',
+  standalone: true,
+  imports: [CommonModule, LucideAngularModule],
+  template: `
     <div class="fixed inset-0 bg-black/60 z-[60] flex items-center justify-center p-4 backdrop-blur-sm animate-in fade-in duration-200">
       <div class="bg-white rounded-xl shadow-2xl w-full max-w-2xl overflow-hidden flex flex-col max-h-[90vh] animate-in zoom-in-95 duration-200">
         <div class="flex justify-between items-center p-5 border-b border-slate-100 bg-slate-50">
           <div class="flex items-center gap-3">
-            <div class="bg-blue-100 p-2 rounded-lg text-blue-600">
+            <div class="bg-red-100 p-2 rounded-lg text-red-600">
               <lucide-icon name="database" [size]="20"></lucide-icon>
             </div>
             <div>
@@ -46,13 +46,13 @@ import { LucideAngularModule } from 'lucide-angular';
   `
 })
 export class SchemaModalComponent {
-    @Output() close = new EventEmitter<void>();
-    copied = signal(false);
+  @Output() close = new EventEmitter<void>();
+  copied = signal(false);
 
-    // We duplicated the SQL in the template for presentation with ngNonBindable, 
-    // but we also need it in a variable for clipboard copy.
-    // Note: innerText from the pre tag could also be used but having it as a const is cleaner.
-    sqlQuery = `-- 1. Create Sales Reps Table
+  // We duplicated the SQL in the template for presentation with ngNonBindable, 
+  // but we also need it in a variable for clipboard copy.
+  // Note: innerText from the pre tag could also be used but having it as a const is cleaner.
+  sqlQuery = `-- 1. Create Sales Reps Table
 CREATE TABLE IF NOT EXISTS public.sales_reps (
     id TEXT PRIMARY KEY,
     name TEXT NOT NULL,
@@ -115,9 +115,9 @@ VALUES
 ON CONFLICT (id) DO NOTHING;
 `;
 
-    handleCopy() {
-        navigator.clipboard.writeText(this.sqlQuery);
-        this.copied.set(true);
-        setTimeout(() => this.copied.set(false), 2000);
-    }
+  handleCopy() {
+    navigator.clipboard.writeText(this.sqlQuery);
+    this.copied.set(true);
+    setTimeout(() => this.copied.set(false), 2000);
+  }
 }

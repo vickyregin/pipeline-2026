@@ -9,7 +9,7 @@ import {
   BarChart2, Search, PieChart, Database, Filter, Calendar,
   Zap, ChevronLeft, ChevronRight, Briefcase, X, Calculator,
   ArrowRight, ArrowLeft, Building2, Edit2, Copy, Check,
-  Mail, Lock, LogOut, ShieldCheck
+  Mail, Lock, LogOut, ShieldCheck, Menu
 } from 'lucide-angular';
 
 export const appConfig: ApplicationConfig = {
@@ -23,7 +23,7 @@ export const appConfig: ApplicationConfig = {
       BarChart2, Search, PieChart, Database, Filter, Calendar,
       Zap, ChevronLeft, ChevronRight, Briefcase, X, Calculator,
       ArrowRight, ArrowLeft, Building2, Edit2, Copy, Check,
-      Mail, Lock, LogOut, ShieldCheck
+      Mail, Lock, LogOut, ShieldCheck, Menu
     }))
   ]
 };

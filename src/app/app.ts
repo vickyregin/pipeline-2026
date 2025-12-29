@@ -1,7 +1,8 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, NavigationEnd, RouterOutlet, RouterLink } from '@angular/router';
-import { SidebarComponent, SidebarService } from './components/sidebar/sidebar.component';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { SidebarService } from './services/sidebar.service';
 import { AddDealModalComponent } from './components/add-deal-modal/add-deal-modal.component';
 import { SchemaModalComponent } from './components/schema-modal/schema-modal.component';
 import { SalesService } from './services/sales.service';

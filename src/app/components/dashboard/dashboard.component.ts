@@ -35,20 +35,20 @@ import { GeminiService } from '../../services/gemini.service';
            </div>
         </div>
 
-        <div class="group bg-white p-6 rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-blue-500/5 transition-all duration-300">
+        <div class="group bg-white p-6 rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-red-500/5 transition-all duration-300">
            <div class="flex justify-between items-start mb-4">
-              <div class="p-2.5 bg-blue-50 text-blue-600 rounded-2xl group-hover:scale-110 transition-transform">
+              <div class="p-2.5 bg-red-50 text-red-600 rounded-2xl group-hover:scale-110 transition-transform">
                  <lucide-icon name="activity" [size]="20"></lucide-icon>
               </div>
-              <span class="text-[10px] font-black text-blue-500 uppercase tracking-widest bg-blue-50 px-2 py-0.5 rounded-full">Active</span>
+              <span class="text-[10px] font-black text-red-500 uppercase tracking-widest bg-red-50 px-2 py-0.5 rounded-full">Active</span>
            </div>
            <p class="text-[10px] text-slate-400 font-black uppercase tracking-widest mb-1">Pipeline Value</p>
            <h3 class="text-2xl font-black text-slate-900 leading-none">{{ salesService.metrics().totalPipelineValue | inr }}</h3>
            <div class="mt-4 flex items-center gap-2">
               <div class="h-1 flex-1 bg-slate-100 rounded-full overflow-hidden">
-                 <div class="h-full bg-blue-500 w-[64%]"></div>
+                 <div class="h-full bg-red-500 w-[64%]"></div>
               </div>
-              <span class="text-[9px] font-bold text-blue-600">Stable</span>
+              <span class="text-[9px] font-bold text-red-600">Stable</span>
            </div>
         </div>
 
@@ -94,9 +94,9 @@ import { GeminiService } from '../../services/gemini.service';
           <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <!-- Pipeline Stage Mix -->
             <div class="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm relative overflow-hidden group">
-              <div class="absolute -top-12 -right-12 w-48 h-48 bg-blue-500/5 rounded-full blur-3xl group-hover:bg-blue-500/10 transition-colors"></div>
+              <div class="absolute -top-12 -right-12 w-48 h-48 bg-red-500/5 rounded-full blur-3xl group-hover:bg-red-500/10 transition-colors"></div>
               <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-8 flex items-center gap-2">
-                <lucide-icon name="bar-chart-2" [size]="14" class="text-blue-500"></lucide-icon> Pipeline Capacity Matrix
+                <lucide-icon name="bar-chart-2" [size]="14" class="text-red-500"></lucide-icon> Pipeline Capacity Matrix
               </h3>
               <div class="h-56 relative z-10 transition-transform duration-500 hover:scale-[1.02]">
                  <canvas baseChart [data]="stageMixData()" [options]="barOptions" [type]="'bar'"></canvas>
@@ -129,21 +129,21 @@ import { GeminiService } from '../../services/gemini.service';
 
         <!-- Right Side AI Sidebar -->
         <div class="flex flex-col gap-8">
-           <div class="bg-slate-950 p-8 rounded-[2rem] shadow-2xl text-white flex flex-col flex-1 relative overflow-hidden group border border-white/5">
-             <div class="absolute inset-0 bg-gradient-to-br from-blue-600/20 via-indigo-900/40 to-slate-950 opacity-100 group-hover:opacity-110 transition-opacity"></div>
+           <div class="bg-[#303030] p-8 rounded-[2rem] shadow-2xl text-white flex flex-col flex-1 relative overflow-hidden group border border-white/5">
+             <div class="absolute inset-0 bg-gradient-to-br from-red-600/20 via-red-900/40 to-[#303030] opacity-100 group-hover:opacity-110 transition-opacity"></div>
              
              <!-- Decorative Grids -->
              <div class="absolute inset-0 opacity-[0.03] pointer-events-none" style="background-image: radial-gradient(circle, #fff 1px, transparent 1px); background-size: 20px 20px;"></div>
 
              <div class="relative z-10 flex items-center justify-between mb-8">
                <div class="flex flex-col">
-                 <span class="text-[9px] font-black text-blue-400 uppercase tracking-[0.3em] mb-1">Intelligence Layer</span>
+                 <span class="text-[9px] font-black text-red-400 uppercase tracking-[0.3em] mb-1">Intelligence Layer</span>
                  <h3 class="text-xl font-black text-white flex items-center gap-2 tracking-tight">
                    Strategy HQ
                  </h3>
                </div>
                <button (click)="runAiAnalysis()" [disabled]="isAnalyzing()" 
-                  class="p-3 bg-white/10 hover:bg-blue-600 hover:text-white rounded-2xl transition-all active:scale-95 shadow-lg border border-white/10">
+                  class="p-3 bg-white/10 hover:bg-[#CA3436] hover:text-white rounded-2xl transition-all active:scale-95 shadow-lg border border-white/10">
                  <lucide-icon name="sparkles" [size]="18" [class.animate-pulse]="isAnalyzing()"></lucide-icon>
                </button>
              </div>
@@ -163,7 +163,7 @@ import { GeminiService } from '../../services/gemini.service';
                 
                 <div *ngIf="!isAnalyzing() && !aiAnalysis()" class="text-center py-20 flex flex-col items-center gap-6 group/btn">
                    <div class="p-5 bg-white/5 rounded-3xl group-hover/btn:scale-110 transition-transform duration-500 border border-white/5">
-                      <lucide-icon name="zap" [size]="32" class="text-blue-500"></lucide-icon>
+                      <lucide-icon name="zap" [size]="32" class="text-red-500"></lucide-icon>
                    </div>
                    <p class="text-[11px] font-bold text-slate-400 leading-relaxed uppercase tracking-widest">Deploy AI Stratagem <br/> for real-time guidance</p>
                 </div>
@@ -259,7 +259,7 @@ export class DashboardComponent {
       const data = STAGE_CONFIG.map(stage =>
          deals.filter(d => d.stage === stage.id).reduce((sum, d) => sum + d.value, 0)
       );
-      const colors = ['rgba(203, 213, 225, 0.4)', 'rgba(96, 165, 250, 0.8)', 'rgba(129, 140, 248, 0.8)', 'rgba(167, 139, 250, 0.8)', 'rgba(16, 185, 129, 0.8)', 'rgba(239, 68, 68, 0.8)'];
+      const colors = ['rgba(203, 213, 225, 0.4)', 'rgba(202, 52, 54, 0.8)', 'rgba(239, 68, 68, 0.8)', 'rgba(167, 139, 250, 0.8)', 'rgba(16, 185, 129, 0.8)', 'rgba(239, 68, 68, 0.8)'];
 
       return {
          labels: STAGE_CONFIG.map(s => s.label),
